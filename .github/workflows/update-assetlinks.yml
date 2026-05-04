@@ -18,7 +18,7 @@ jobs:
         id: fetch
         run: |
           set -euo pipefail
-          SOURCE_URL="https://raw.githubusercontent.com/cigaleapp/cigale/main/static/.well-known/assetlinks.json"
+          SOURCE_URL="https://cigaleapp.github.io/cigale/.well-known/assetlinks.json"
           FINGERPRINT="6F:D9:0C:B4:9D:66:5B:0F:AB:2E:79:4C:61:4C:09:D0:1F:47:C6:6A:2D:B1:57:E9:CB:BD:12:48:77:C1:27:1A"
 
           curl -fsSL "$SOURCE_URL" \
