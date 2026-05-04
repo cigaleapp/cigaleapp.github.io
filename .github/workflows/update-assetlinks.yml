@@ -1,0 +1,43 @@
+name: Update assetlinks.json
+
+on:
+  schedule:
+    - cron: '0 0 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Fetch and filter assetlinks.json
+        id: fetch
+        run: |
+          set -euo pipefail
+          SOURCE_URL="https://raw.githubusercontent.com/cigaleapp/cigale/main/static/.well-known/assetlinks.json"
+          FINGERPRINT="6F:D9:0C:B4:9D:66:5B:0F:AB:2E:79:4C:61:4C:09:D0:1F:47:C6:6A:2D:B1:57:E9:CB:BD:12:48:77:C1:27:1A"
+
+          curl -fsSL "$SOURCE_URL" \
+            | jq --arg fp "$FINGERPRINT" \
+              '[.[] | select(.target.sha256_cert_fingerprints | contains([$fp]))]' \
+            > /tmp/assetlinks-new.json
+
+          if [ -f .well-known/assetlinks.json ] && diff -q /tmp/assetlinks-new.json .well-known/assetlinks.json > /dev/null 2>&1; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Update file if changed
+        if: steps.fetch.outputs.changed == 'true'
+        run: |
+          cp /tmp/assetlinks-new.json .well-known/assetlinks.json
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add .well-known/assetlinks.json
+          git commit -m "chore: update assetlinks.json from cigaleapp/cigale"
+          git push

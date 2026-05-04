@@ -1,0 +1,22 @@
+[
+	{
+		"relation": ["delegate_permission/common.handle_all_urls"],
+		"target": {
+			"namespace": "android_app",
+			"package_name": "io.github.cigaleapp",
+			"sha256_cert_fingerprints": [
+				"6F:D9:0C:B4:9D:66:5B:0F:AB:2E:79:4C:61:4C:09:D0:1F:47:C6:6A:2D:B1:57:E9:CB:BD:12:48:77:C1:27:1A"
+			]
+		}
+	},
+	{
+		"relation": ["delegate_permission/common.handle_all_urls"],
+		"target": {
+			"namespace": "android_app",
+			"package_name": "io.github.cigaleapp.nightly",
+			"sha256_cert_fingerprints": [
+				"6F:D9:0C:B4:9D:66:5B:0F:AB:2E:79:4C:61:4C:09:D0:1F:47:C6:6A:2D:B1:57:E9:CB:BD:12:48:77:C1:27:1A"
+			]
+		}
+	}
+]
